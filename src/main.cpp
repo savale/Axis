@@ -2092,6 +2092,9 @@ bool CBlock::AcceptBlock()
     if (IsProofOfWork() && nHeight > CUTOFF_POW_BLOCK)
         return DoS(100, error("AcceptBlock() : No proof-of-work allowed anymore (height = %d)", nHeight));
 
+	if (IsProofOfStake() && nHeight < POW_ON_BLOCK)
+        return DoS(100, error("AcceptBlock() : Proof-of-stake not yet allowed (height = %d)", nHeight));
+
     // Check proof-of-work or proof-of-stake
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
         return DoS(100, error("AcceptBlock() : incorrect %s", IsProofOfWork() ? "proof-of-work" : "proof-of-stake"));
@@ -4321,6 +4324,8 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
             // ppcoin: if proof-of-stake block found then process block
             if (pblock->IsProofOfStake())
             {
+				if (pindexPrev->nHeight < POW_ON_BLOCK)
+					continue;
                 if (!pblock->SignBlock(*pwalletMain))
                     continue;
                 printf("CPUMiner : proof-of-stake block found %s\n", pblock->GetHash().ToString().c_str()); 

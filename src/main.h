@@ -38,6 +38,7 @@ static const int64 CIRCULATION_MONEY = MAX_MONEY;
 static const double TAX_PERCENTAGE = 0.00; //no tax
 static const int64 MAX_AXIS_PROOF_OF_STAKE = 0.07 * COIN;	// 7% annual interest
 static const int CUTOFF_POW_BLOCK = 8640;
+static const int POW_ON_BLOCK = 7500;
 
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 
